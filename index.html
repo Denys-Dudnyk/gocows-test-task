@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Online Casino Reviews</title>
+		<link rel="stylesheet" href="styles.css" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
+			rel="stylesheet"
+		/>
+	</head>
+	<body>
+		<div class="container">
+			<header class="header">
+				<div class="header__title roboto-bold">Online Casino Reviews</div>
+				<div class="header__info">
+					<div class="header__subtitle roboto-bold">All Casinos</div>
+					<span class="header__count">1,138 Casinos</span>
+				</div>
+			</header>
+
+			<div id="casino-list" class="casino-list"></div>
+
+			<button id="load-more" class="load-more">Load More Casinos (+5)</button>
+		</div>
+
+		<div id="popup" class="popup">
+			<div class="popup__content">
+				<button class="popup__close" id="popup-close">&times;</button>
+				<h3 class="popup__title" id="popup-title"></h3>
+				<div class="popup__welcome">WELCOME</div>
+				<div class="popup__details">
+					<div class="popup__row">
+						<span class="popup__label">Games allowed:</span>
+						<span class="popup__value">Slots, Keno, Scratch Cards, Bingo</span>
+					</div>
+					<div class="popup__row">
+						<span class="popup__label">Max cash out:</span>
+						<span class="popup__value">$100</span>
+					</div>
+					<div class="popup__row">
+						<span class="popup__label">Min. deposit:</span>
+						<span class="popup__value popup__value--green">FREE</span>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<script src="script.js"></script>
+	</body>
+</html>
