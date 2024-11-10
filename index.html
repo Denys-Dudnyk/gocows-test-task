@@ -13,6 +13,11 @@
 		/>
 	</head>
 	<body>
+		<div id="toast" class="toast">
+			<img src="public/check.svg" alt="Check" class="toast__icon" />
+			<span class="toast__message">Code copied to clipboard.</span>
+		</div>
+
 		<div class="container">
 			<header class="header">
 				<div class="header__title roboto-bold">Online Casino Reviews</div>
@@ -28,10 +33,15 @@
 		</div>
 
 		<div id="popup" class="popup">
-			<div class="popup__content">
-				<button class="popup__close" id="popup-close">&times;</button>
-				<h3 class="popup__title" id="popup-title"></h3>
-				<div class="popup__welcome">WELCOME</div>
+			<div id="popup-container" class="popup__content">
+				<img
+					class="popup__close"
+					id="popup-close"
+					src="public/close-icon.svg"
+					alt="Close icon"
+				/>
+				<div class="popup__title" id="popup-title"></div>
+				<div class="popup__welcome" id="popup-welcome">WELCOME</div>
 				<div class="popup__details">
 					<div class="popup__row">
 						<span class="popup__label">Games allowed:</span>

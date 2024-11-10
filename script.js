@@ -88,25 +88,81 @@ class CasinoReviews {
 		this.initElements()
 		this.bindEvents()
 		this.renderCasinos()
+		this.activeSpinsElement = null
 	}
 
 	initElements() {
 		this.casinoList = document.getElementById('casino-list')
+
 		this.loadMoreBtn = document.getElementById('load-more')
+
 		this.popup = document.getElementById('popup')
+		this.popupContent = this.popup.querySelector('.popup__content')
 		this.popupTitle = document.getElementById('popup-title')
 		this.popupClose = document.getElementById('popup-close')
+		this.popupWelcome = this.popup.querySelector('.popup__welcome')
+
+		this.toast = document.getElementById('toast')
 	}
 
 	bindEvents() {
 		this.loadMoreBtn.addEventListener('click', () => this.loadMore())
-		this.popupClose.addEventListener('click', () => this.closePopup())
-		this.popup.addEventListener('click', e => {
-			if (e.target === this.popup) this.closePopup()
+		this.popupClose.addEventListener('click', e => {
+			e.stopPropagation()
+			this.closePopup()
 		})
+
+		document.addEventListener('click', e => {
+			if (
+				this.popup.style.display === 'block' &&
+				!this.popupContent.contains(e.target) &&
+				!e.target.classList.contains('casino-card__spins')
+			) {
+				this.closePopup()
+			}
+		})
+
+		window.addEventListener('resize', () => {
+			if (this.activeSpinsElement) {
+				this.updatePopupPosition(this.activeSpinsElement)
+			}
+		})
+
 		document.addEventListener('keydown', e => {
 			if (e.key === 'Escape') this.closePopup()
 		})
+
+		document.addEventListener('click', e => {
+			if (e.target.classList.contains('popup__welcome')) {
+				this.copyWelcomeCode()
+			}
+		})
+	}
+
+	async copyWelcomeCode() {
+		try {
+			await navigator.clipboard.writeText('WELCOME')
+			this.showToast()
+		} catch (err) {
+			console.error('Failed to copy text: ', err)
+		}
+	}
+
+	showToast() {
+		const rect = this.popupWelcome.getBoundingClientRect()
+		const offsetTop = rect.top + window.scrollY
+		const offsetLeft = rect.left + window.scrollX
+
+		this.toast.style.top = `${offsetTop - this.toast.offsetHeight - 55}px`
+		this.toast.style.left = `${
+			offsetLeft + (rect.width - this.toast.offsetWidth) - 245
+		}px`
+		this.toast.classList.add('toast--visible')
+		setTimeout(() => this.hideToast(), 3000)
+	}
+
+	hideToast() {
+		this.toast.classList.remove('toast--visible')
 	}
 
 	createCasinoCard(casino) {
@@ -153,9 +209,13 @@ class CasinoReviews {
             <button class="casino-card__visit">VISIT</button>
         `
 
-		card.querySelector('.casino-card__spins').addEventListener('click', () => {
-			this.showPopup(casino.name, casino.freeSpins)
-		})
+		if (casino.freeSpins > 0) {
+			const spinsElement = card.querySelector('.casino-card__spins')
+			spinsElement.addEventListener('click', e => {
+				e.stopPropagation()
+				this.showPopup(casino.name, casino.freeSpins, spinsElement)
+			})
+		}
 
 		return card
 	}
@@ -175,15 +235,26 @@ class CasinoReviews {
 		this.renderCasinos()
 	}
 
-	showPopup(casinoName, freeSpins) {
+	updatePopupPosition(element) {
+		const rect = element.getBoundingClientRect()
+		const offsetTop = rect.bottom + window.scrollY
+		const offsetLeft = rect.left + window.scrollX
+
+		this.popupContent.style.top = `${offsetTop + 1}px`
+		this.popupContent.style.left = `${offsetLeft}px`
+	}
+
+	showPopup(casinoName, freeSpins, element) {
+		this.activeSpinsElement = element
 		this.popupTitle.textContent = `${freeSpins} Free Spins at ${casinoName}`
-		this.popup.style.display = 'flex'
-		document.body.style.overflow = 'hidden'
+		this.popup.style.display = 'block'
+
+		this.updatePopupPosition(element)
 	}
 
 	closePopup() {
 		this.popup.style.display = 'none'
-		document.body.style.overflow = ''
+		this.activeSpinsElement = null
 	}
 }
 
