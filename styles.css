@@ -409,6 +409,10 @@ body {
 	.toast {
 		left: 20% !important;
 	}
+
+	.casino-card__bonus {
+		margin-right: 0;
+	}
 }
 
 @media (max-width: 320px) {
